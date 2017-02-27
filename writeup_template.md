@@ -18,13 +18,13 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/undistort_output.png "Undistorted"
+[image1]: ./examples/undistorted_test1.jpg "Undistorted"
 [image2]: ./test_images/test1.jpg "Road Transformed"
-[image3]: ./examples/binary_combo_example.jpg "Binary Example"
-[image4]: ./examples/warped_straight_lines.jpg "Warp Example"
-[image5]: ./examples/color_fit_lines.jpg "Fit Visual"
-[image6]: ./examples/example_output.jpg "Output"
-[video1]: ./project_video.mp4 "Video"
+[image3]: ./examples/gradient_test1.jpg "Binary Example"
+[image4]: ./examples/birdseye_test1.jpg "Warp Example"
+[image5]: ./examples/lane_test1.jpg "Fit Visual"
+[image6]: ./examples/lane_test1.jpg "Output"
+[video1]: ./project_output.mp4 "Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
 ###Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
@@ -39,7 +39,7 @@ You're reading it!
 
 ####1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
 
-The code for this step is contained in the first code cell of the IPython notebook located in "./examples/example.ipynb" (or in lines # through # of the file called `some_file.py`).  
+The code for this step is contained in the first code cell of the IPython notebook located in "./scripts/calibrate.py" (also look at ./scripts/Pipeline.ipynb).  
 
 I start by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here I am assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.  Thus, `objp` is just a replicated array of coordinates, and `objpoints` will be appended with a copy of it every time I successfully detect all chessboard corners in a test image.  `imgpoints` will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.  
 
