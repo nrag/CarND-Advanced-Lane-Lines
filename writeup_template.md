@@ -14,12 +14,14 @@
 
 [//]: # (Image References)
 
-[image1]: ./examples/undistorted_test1.jpg "Undistorted"
+[image1]: ./output_images/undistorted_test1.jpg "Undistorted"
 [image2]: ./test_images/test1.jpg "Road Transformed"
-[image3]: ./examples/gradient_test1.jpg "Binary Example"
-[image4]: ./examples/birdseye_straight_lines1.jpg "Warp Example"
-[image5]: ./examples/lane_test1.jpg "Fit Visual"
-[image6]: ./examples/lane_test1.jpg "Output"
+[image3]: ./output_images/gradient_test1.jpg "Binary Example"
+[image4]: ./output_images/birdseye_straight_lines1.jpg "Warp Example"
+[image5]: ./output_images/banded_test1.jpg "Fit Visual"
+[image6]: ./output_images/lane_test1.jpg "Output"
+[image7]: ./output_images/preprocessing.png "Pre-processing"
+[image8]: ./output_images/lanedetection.png "Lane detection"
 [video1]: ./project_output.mp4 "Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
@@ -90,6 +92,9 @@ I verified that my perspective transform was working as expected by drawing the 
 
 ![alt text][image4]
 
+After all the preprocessing, this is how the intermediate images look for the examples:
+![alt text][image7]
+
 ####Lane identification and polynomial fit
 To identify the lanes I did the following:
 * I first took a histogram along all the columns in the lower half of the image like this
@@ -120,6 +125,8 @@ I implemented this step in lines # through # in my code in `laneline.py` in the 
 
 ![alt text][image6]
 
+After all the lane detection steps, this is how the intermediate images look for the examples:
+![alt text][image8]
 ---
 
 ###Pipeline (video)
