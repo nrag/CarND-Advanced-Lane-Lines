@@ -5,20 +5,20 @@ from calibrate import CalibrateCamera
 from gradient import ColorAndGradient
 from perspective import Perspective
 from findlanes import LaneDetection
-
+from laneline import LaneLine
 from moviepy.editor import VideoFileClip
 
 class VideoLaneDetection:
     def __init__(self, calibration_path, video_file, output_file):
         self.calibrate = CalibrateCamera(calibration_path)
-        self.gradient = ColorAndGradient(channel = 's', grad_channel='gray', channel_threshold = (180,255), grad_threshold=(70,100))
+        self.gradient = ColorAndGradient(channel = 's', grad_channel='gray')
         self.perspective = Perspective()
         self.lane_detection = LaneDetection()
 
         self.video_file = video_file
         self.output_file = output_file
 
-        self.window_size = 10  # how many frames for line smoothing
+        self.window_size = 5  # how many frames for line smoothing
         self.previous_lanes = []
         self.detected = False  # did the fast line fit detect the lines?
 
@@ -38,7 +38,7 @@ class VideoLaneDetection:
         left_B, right_B = [], []
         left_C, right_C = [], []
 
-        for lane in previous_lanes:
+        for lane in self.previous_lanes:
             left_A.append(lane.left_fit[0])
             left_B.append(lane.left_fit[1])
             left_C.append(lane.left_fit[2])
@@ -56,7 +56,7 @@ class VideoLaneDetection:
         avg_lane.right_lane_inds = self.previous_lanes[-1].right_lane_inds
         avg_lane.nonzerox = self.previous_lanes[-1].nonzerox
         avg_lane.nonzeroy = self.previous_lanes[-1].nonzeroy
-        avg_lane.image_shape = self.previous_lanes[-1].shape
+        avg_lane.image_shape = self.previous_lanes[-1].image_shape
 
         return avg_lane
       
@@ -70,17 +70,19 @@ class VideoLaneDetection:
         if not self.detected:
             lane = self.lane_detection.detect(binary_warped)
             self.add_lane(lane)
-            detected = True  # slow line fit always detects the line
-
+            self.detected = True  # slow line fit always detects the line
         else:  # implies detected == True
-            previous_lane = self.get_averaged_lane(self)
+            previous_lane = self.get_averaged_lane()
             lane = self.lane_detection.adjust(binary_warped, previous_lane)
-            if lane is None:
-                detected = False
+            if lane is not None:
+                self.add_lane(lane)
+            else:
+                self.detected = False
 
         # Perform final visualization on top of original undistorted image
-        highlighted = lane.highlight_lane(undistorted, self.perspective)
-        annotated = lane.annotate_image(highlighted)
+        avg_lane = self.get_averaged_lane()
+        highlighted = avg_lane.highlight_lane(undistorted, self.perspective)
+        annotated = avg_lane.annotate_image(highlighted)
 
         return annotated
 

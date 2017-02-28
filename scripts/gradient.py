@@ -2,11 +2,11 @@ import numpy as np
 import cv2
 
 class ColorAndGradient():
-    def __init__(self, channel = 's', grad_channel='gray', channel_threshold = (180,255), grad_threshold=(70,100)):
+    def __init__(self, channel = 's', grad_channel='gray', channel_threshold = (100,255), grad_threshold=(50,255)):
         self.channel = channel
         self.grad = grad_channel
-        self.ksize = 15
-        self.mag_thresh = (70,100)
+        self.ksize = 3
+        self.mag_thresh = (50,255)
         self.dir_thresh = (0.7, 1.3)
         self.channel_threshold = channel_threshold
         self.grad_threshold = grad_threshold
@@ -86,9 +86,9 @@ class ColorAndGradient():
         gradx = self.abs_sobel_thresh(image, orient='x', sobel_kernel=self.ksize, thresh=self.grad_threshold)
         grady = self.abs_sobel_thresh(image, orient='y', sobel_kernel=self.ksize, thresh=self.grad_threshold)
         mag_binary = self.mag_sobel_thresh(image, sobel_kernel=self.ksize, thresh=self.mag_thresh)
-        dir_binary = self.dir_threshold(image, sobel_kernel=self.ksize, thresh=self.dir_thresh)
+        dir_binary = self.dir_threshold(image, sobel_kernel=15, thresh=self.dir_thresh)
         combined = np.zeros_like(dir_binary)
-        combined[((gradx == 1) & (grady == 1)) | ((mag_binary == 1) & (dir_binary == 1))] = 1
+        combined[((gradx == 1)) | ((mag_binary == 1) & (dir_binary == 1))] = 1
         return combined
 
     def filterAndThreshold(self, img):
